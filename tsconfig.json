@@ -4,8 +4,9 @@
     "module": "CommonJS",
     "declaration": true,
     "outDir": "./dist",
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]
 }
