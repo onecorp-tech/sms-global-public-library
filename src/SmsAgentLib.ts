@@ -1,6 +1,5 @@
 import {createHttpClient} from "./client/httpClient"
 import {OtpService} from "./modules/otp/otp.service"
-import {ProfileService} from "./modules/profile/profile.service"
 
 export class SmsAgentLib {
   private secret: string
@@ -8,9 +7,8 @@ export class SmsAgentLib {
   private httpClient: ReturnType<typeof createHttpClient>
 
   public otp: OtpService
-  public profile: ProfileService
 
-  constructor(secret: string, baseUrl: string = "http://localhost:3000") {
+  constructor(secret: string, baseUrl: string = "https://api.dev.sms.onesiamsoft.com") {
     if (!secret || secret.trim() === "") {
       throw new Error("A valid secret is required!")
     }
@@ -19,6 +17,5 @@ export class SmsAgentLib {
     this.httpClient = createHttpClient(this.baseUrl)
 
     this.otp = new OtpService(this.httpClient, this.secret)
-    this.profile = new ProfileService(this.httpClient, this.secret)
   }
 }

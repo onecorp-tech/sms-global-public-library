@@ -1,6 +1,6 @@
 {
   "name": "sms-agent-lib",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/He-Hey-BOI/sms-agent-lib.git",
