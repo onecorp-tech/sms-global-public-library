@@ -1,7 +1,7 @@
 import {config} from "./config"
 import axios from "axios"
 import {OtpService} from "../src/modules/otp/otp.service"
-import {OtpSendRequest, VerifyOtpRequest, OtpResendRequest} from "../src/modules/otp/dto/otp.dto"
+import { OtpResendRequest, OtpSendRequest, VerifyOtpRequest } from "../src"
 
 describe("OtpService Integration Tests", () => {
   let otpService: OtpService
