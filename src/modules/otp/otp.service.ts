@@ -1,39 +1,30 @@
 import {AxiosInstance} from "axios"
 import {OtpResendRequest, OtpSendRequest, OtpSendResponse, OtpVerifyResponse, VerifyOtpRequest} from "./dto/otp.dto"
+import {ERROR_MESSAGES, OTP_URLS} from "../../utils"
 
 export class OtpService {
   constructor(private httpClient: AxiosInstance, private secret: string) {}
 
-  public async send(request: OtpSendRequest): Promise<OtpSendResponse> {
-    const response = await this.httpClient.post("/otp/send", request, {
+  private async postRequest<T>(url: string, request: any): Promise<T> {
+    const response = await this.httpClient.post(url, request, {
       headers: {Authorization: `Bearer ${this.secret}`}
     })
     const data = response.data?.data
     if (!data) {
-      throw new Error("No data returned from OTP send API")
+      throw new Error(ERROR_MESSAGES.NO_DATA_RETURNED(url))
     }
     return data
+  }
+
+  public async send(request: OtpSendRequest): Promise<OtpSendResponse> {
+    return this.postRequest<OtpSendResponse>(OTP_URLS.SEND, request)
   }
 
   public async verify(request: VerifyOtpRequest): Promise<OtpVerifyResponse> {
-    const response = await this.httpClient.post("/otp/verify", request, {
-      headers: {Authorization: `Bearer ${this.secret}`}
-    })
-    const data = response.data?.data
-    if (!data) {
-      throw new Error("No data returned from OTP verify API")
-    }
-    return data
+    return this.postRequest<OtpVerifyResponse>(OTP_URLS.VERIFY, request)
   }
 
   public async resend(request: OtpResendRequest): Promise<OtpSendResponse> {
-    const response = await this.httpClient.post("/otp/resend", request, {
-      headers: {Authorization: `Bearer ${this.secret}`}
-    })
-    const data = response.data?.data
-    if (!data) {
-      throw new Error("No data returned from OTP resend API")
-    }
-    return data
+    return this.postRequest<OtpSendResponse>(OTP_URLS.RESEND, request)
   }
 }

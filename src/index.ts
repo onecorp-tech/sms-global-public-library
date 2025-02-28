@@ -1,2 +1,3 @@
 export * from "./SmsAgentLib"
-export * from "./modules/otp/dto/otp.dto"
+export * from "./modules/index"
+export * from "./utils/index"
