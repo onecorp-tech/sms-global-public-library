@@ -12,8 +12,10 @@ export class SmsAgentLib {
   public report: ReportService
   public profile: ProfileService
 
-  constructor(secret: string, baseUrl: string = BASE_URL) {
-    this.validateSecret(secret)
+  constructor(secret: string = "", baseUrl: string = BASE_URL) {
+    if (!secret || secret.trim() === "") {
+      console.warn(ERROR_MESSAGES.INVALID_SECRET)
+    }
     this.secret = secret
     this.baseUrl = baseUrl
     this.httpClient = createHttpClient(this.baseUrl)
@@ -22,11 +24,5 @@ export class SmsAgentLib {
     this.quicksend = new QuickSendService(this.httpClient, this.secret)
     this.report = new ReportService(this.httpClient, this.secret)
     this.profile = new ProfileService(this.httpClient, this.secret)
-  }
-
-  private validateSecret(secret: string): void {
-    if (!secret || secret.trim() === "") {
-      throw new Error(ERROR_MESSAGES.INVALID_SECRET)
-    }
   }
 }

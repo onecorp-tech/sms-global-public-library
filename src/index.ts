@@ -1,3 +1,3 @@
 export * from "./SmsAgentLib"
-export * from "./modules/index"
-export * from "./utils/index"
+export * from "./modules"
+export * from "./utils"

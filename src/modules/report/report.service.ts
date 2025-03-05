@@ -1,6 +1,6 @@
-import {AxiosInstance} from "axios"
+import {AxiosInstance, AxiosError} from "axios"
 import {IPaginationOptions, IReport} from "./interfaces/report.interface"
-import {ERROR_MESSAGES, REPORT_URLS} from "../../utils"
+import {ERROR_MESSAGES, extractData, handleAxiosError, REPORT_URLS} from "../../utils"
 
 export class ReportService {
   constructor(private httpClient: AxiosInstance, private secret: string) {}
@@ -11,9 +11,9 @@ export class ReportService {
         params: request,
         headers: {Authorization: `Bearer ${this.secret}`}
       })
-      return response.data
+      return extractData(response)
     } catch (error) {
-      throw new Error(ERROR_MESSAGES.REQUEST_FAILED(url))
+      throw new Error(`${ERROR_MESSAGES.REQUEST_FAILED(url, handleAxiosError(error))}`)
     }
   }
 
