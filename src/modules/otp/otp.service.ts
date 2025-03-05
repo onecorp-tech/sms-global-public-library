@@ -1,5 +1,5 @@
 import {AxiosInstance} from "axios"
-import {OtpResendRequest, OtpSendRequest, OtpSendResponse, OtpVerifyResponse, VerifyOtpRequest} from "./dto/otp.dto"
+import {OtpResendRequest, OtpSendRequest, OtpSendResponse, OtpVerifyResponse, VerifyOtpRequest} from "./interfaces/otp.interface"
 import {ERROR_MESSAGES, OTP_URLS} from "../../utils"
 
 export class OtpService {

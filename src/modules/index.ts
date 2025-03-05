@@ -1,5 +1,5 @@
 export * from "./otp/otp.service"
-export * from "./otp/dto/otp.dto"
+export * from "./otp/interfaces/otp.interface"
 export * from "./profile/profile.service"
 export * from "./profile/interfaces/profile.interface"
 export * from "./quicksend/quicksend.service"

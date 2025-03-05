@@ -1,340 +1,189 @@
-# SMS Global Public Library
+# 📚 SMS Agent Library Documentation
 
-A library for interacting with the SMS Global API, providing services for OTP, Quick Send, Reports, and Profile management.
+## 1. Overview
 
-## Installation
+The **SMS Agent Library** is a TypeScript-based library designed to send and manage SMS messages through an API. It includes modules for OTP handling, quick sends, user profile management, and report generation.
 
-Install the library using npm:
+---
+
+## 2. Installation
 
 ```bash
-npm install sms-global-public-library
+yarn add sms-agent-lib
 ```
 
-## Usage
+or
 
-### Importing the Library
-
-#### JavaScript
-
-```javascript
-const {SmsAgentLib} = require("sms-global-public-library")
+```bash
+npm install sms-agent-lib
 ```
 
-#### TypeScript
+---
+
+## 3. Configuration
+
+Create a `.env` file:
+
+```
+TOKEN=your-develop-token
+```
+
+---
+
+## 4. Usage Example
+
+### TypeScript Example
 
 ```typescript
-import {SmsAgentLib} from "sms-global-public-library"
+import {SmsAgentLib, OtpSendRequest} from "sms-agent-lib"
+
+const smsAgent = new SmsAgentLib(process.env.TOKEN)
+
+const otpData: OtpSendRequest = {
+  sender_id: "IMSOLOVELY",
+  country_code: "TH",
+  recipient: "0888888888",
+  message: "Your OTP is 1234",
+  ref_code: "1Q2Q",
+  validity: 5,
+  digit: 4
+}
+
+smsAgent.otp.send(otpData).then(console.log).catch(console.error)
 ```
 
-### Initializing the Library
+---
 
-#### JavaScript
+### JavaScript Example
 
-```javascript
-const secret = "your-secret-key"
-const smsAgent = new SmsAgentLib(secret)
+```js
+const {SmsAgentLib} = require("sms-agent-lib")
+require("dotenv").config()
+
+const smsAgent = new SmsAgentLib(process.env.TOKEN)
+
+smsAgent.otp
+  .send({
+    sender_id: "IMSOLOVELY",
+    country_code: "TH",
+    recipient: "0888888888",
+    message: "Your OTP is 1234",
+    ref_code: "1Q2Q",
+    validity: 5,
+    digit: 4
+  })
+  .then(console.log)
+  .catch(console.error)
 ```
 
-#### TypeScript
+---
+
+## 4.5 User Profile
 
 ```typescript
-const secret = "your-secret-key"
-const smsAgent = new SmsAgentLib(secret)
+smsAgent.profile.me().then(console.log).catch(console.error)
+smsAgent.profile.plan().then(console.log).catch(console.error)
+smsAgent.profile.balance().then(console.log).catch(console.error)
 ```
 
-### OTP Service
+**Sample Responses:**
 
-#### Send OTP
+- **me:**
 
-#### JavaScript
-
-```javascript
-const otpSendRequest = {
-  phone: "66874844476",
-  message: "Your OTP code is {code}",
-  code_length: 4
+```json
+{
+  "email": "example@sms-global.com",
+  "name": "SMS Agent",
+  "phone": "0888888888",
+  "credit": 9999,
+  "address": {
+    "line_1": "adress1",
+    "line_2": "adress2",
+    "country": "Thailand",
+    "website": "http://sms-global.com",
+    "district": "Bangkok",
+    "province": "Bangkok",
+    "postal_code": "10310",
+    "business_type": "LL"
+  },
+  "kyc_status": "UNDEFINED",
+  "enable": true
 }
-
-smsAgent.otp
-  .send(otpSendRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
 ```
 
-#### TypeScript
+- **plan:**
+
+```json
+{
+  "name": "Free",
+  "description": "A simple start for everyone",
+  "options": {
+    "sms_max": 100000,
+    "send_spam_message": false,
+    "per_unit_price": 1,
+    "create_sub_account": true,
+    "api_access": true,
+    "maximum_sender": 1,
+    "expired_in": 3,
+    "expired_in_unit": "month"
+  }
+}
+```
+
+- **balance:**
+
+```json
+{
+  "credit": 9999,
+  "checkBalanceAt": "2025-03-05T08:07:17.321Z"
+}
+```
+
+---
+
+## 4.6 Reports
 
 ```typescript
-const otpSendRequest: OtpSendRequest = {
-  phone: "66874844476",
-  message: "Your OTP code is {code}",
-  code_length: 4
-}
+smsAgent.report.otp({page: 1, limit: 10}).then(console.log).catch(console.error)
 
-smsAgent.otp
-  .send(otpSendRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
+smsAgent.report.quicksend({page: 1, limit: 10}).then(console.log).catch(console.error)
 ```
 
-#### Verify OTP
+---
 
-#### JavaScript
-
-```javascript
-const verifyOtpRequest = {
-  phone: "66874844476",
-  code: "1234"
-}
-
-smsAgent.otp
-  .verify(verifyOtpRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
-```
-
-#### TypeScript
+### Quick Send Example
 
 ```typescript
-const verifyOtpRequest: VerifyOtpRequest = {
-  phone: "66874844476",
-  code: "1234"
-}
-
-smsAgent.otp
-  .verify(verifyOtpRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
-```
-
-#### Resend OTP
-
-#### JavaScript
-
-```javascript
-const otpResendRequest = {
-  phone: "66874844476"
-}
-
-smsAgent.otp
-  .resend(otpResendRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
-```
-
-#### TypeScript
-
-```typescript
-const otpResendRequest: OtpResendRequest = {
-  phone: "66874844476"
-}
-
-smsAgent.otp
-  .resend(otpResendRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
-```
-
-### Quick Send Service
-
-#### Send Quick Message
-
-#### JavaScript
-
-```javascript
-const quickSendRequest = {
-  from: "IMSOLOVELY",
-  to: "66874844476",
-  message: "Hello world!"
-}
-
 smsAgent.quicksend
-  .send(quickSendRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
+  .send({
+    sender_id: "IMSOLOVELY",
+    country_code: "TH",
+    recipient: "0888888888",
+    message: "This is a quick send message"
+  })
+  .then(console.log)
+  .catch(console.error)
 ```
 
-#### TypeScript
+**Sample Response:**
 
-```typescript
-const quickSendRequest: QuickSendRequest = {
-  from: "IMSOLOVELY",
-  to: "66874844476",
-  message: "Hello world!"
+```json
+{
+  "message": "Request sent successfully"
 }
-
-smsAgent.quicksend
-  .send(quickSendRequest)
-  .then(response => console.log(response))
-  .catch(error => console.error(error))
 ```
 
-### Report Service
+---
 
-#### Get Quick Send Report
+## 5. Error Handling
 
-#### JavaScript
+- **Common Errors:**
+  - `REQUEST_FAILED`: On HTTP request failure.
+  - `NO_DATA_RETURNED`: When no data is returned by the API.
+  - `INVALID_SECRET`: When the secret is missing.
 
-```javascript
-const paginationOptions = {
-  page: 1,
-  limit: 10
-}
+---
 
-smsAgent.report
-  .quicksend(paginationOptions)
-  .then(report => console.log(report))
-  .catch(error => console.error(error))
-```
+## 6. Conclusion
 
-#### TypeScript
-
-```typescript
-const paginationOptions: IPaginationOptions = {
-  page: 1,
-  limit: 10
-}
-
-smsAgent.report
-  .quicksend(paginationOptions)
-  .then(report => console.log(report))
-  .catch(error => console.error(error))
-```
-
-#### Get OTP Report
-
-#### JavaScript
-
-```javascript
-smsAgent.report
-  .otp(paginationOptions)
-  .then(report => console.log(report))
-  .catch(error => console.error(error))
-```
-
-#### TypeScript
-
-```typescript
-smsAgent.report
-  .otp(paginationOptions)
-  .then(report => console.log(report))
-  .catch(error => console.error(error))
-```
-
-### Profile Service
-
-#### Get Profile Information
-
-#### JavaScript
-
-```javascript
-smsAgent.profile
-  .me()
-  .then(profile => console.log(profile))
-  .catch(error => console.error(error))
-```
-
-#### TypeScript
-
-```typescript
-smsAgent.profile
-  .me()
-  .then(profile => console.log(profile))
-  .catch(error => console.error(error))
-```
-
-#### Get Plan Information
-
-#### JavaScript
-
-```javascript
-smsAgent.profile
-  .plan()
-  .then(plan => console.log(plan))
-  .catch(error => console.error(error))
-```
-
-#### TypeScript
-
-```typescript
-smsAgent.profile
-  .plan()
-  .then(plan => console.log(plan))
-  .catch(error => console.error(error))
-```
-
-#### Get Balance Information
-
-#### JavaScript
-
-```javascript
-smsAgent.profile
-  .balance()
-  .then(balance => console.log(balance))
-  .catch(error => console.error(error))
-```
-
-#### TypeScript
-
-```typescript
-smsAgent.profile
-  .balance()
-  .then(balance => console.log(balance))
-  .catch(error => console.error(error))
-```
-
-## API Reference
-
-### SmsAgentLib
-
-#### Constructor
-
-```typescript
-constructor(secret: string, baseUrl?: string)
-```
-
-- `secret`: Your API secret key.
-- `baseUrl`: (Optional) The base URL for the API. Defaults to `https://api.dev.sms.onesiamsoft.com`.
-
-#### Properties
-
-- `otp`: Instance of `OtpService`.
-- `quicksend`: Instance of `QuickSendService`.
-- `report`: Instance of `ReportService`.
-- `profile`: Instance of `ProfileService`.
-
-### OtpService
-
-#### Methods
-
-- `send(request: OtpSendRequest): Promise<OtpSendResponse>`
-- `verify(request: VerifyOtpRequest): Promise<OtpVerifyResponse>`
-- `resend(request: OtpResendRequest): Promise<OtpSendResponse>`
-
-### QuickSendService
-
-#### Methods
-
-- `send(request: QuickSendRequest): Promise<QuickSendResponse>`
-
-### ReportService
-
-#### Methods
-
-- `quicksend(request: IPaginationOptions): Promise<IReport>`
-- `otp(request: IPaginationOptions): Promise<IReport>`
-
-### ProfileService
-
-#### Methods
-
-- `me(): Promise<IUser>`
-- `plan(): Promise<IPlan>`
-- `balance(): Promise<IBalance>`
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
-
-## License
-
-This project is licensed under the MIT License.
+The SMS Agent Library is a comprehensive solution for SMS management, providing type-safe DTOs and a modular API design.
