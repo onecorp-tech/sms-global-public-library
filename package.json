@@ -1,12 +1,14 @@
 {
   "name": "sms-agent-lib",
-  "version": "1.0.5",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/He-Hey-BOI/sms-agent-lib.git",
   "author": "Rungroj Wongkaeo <63869763+RungrojWK@users.noreply.github.com>",
   "license": "MIT",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest"
