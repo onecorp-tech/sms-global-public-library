@@ -1,30 +1,24 @@
 import {AxiosInstance} from "axios"
 import {IBalance, IPlan, IUser} from "./interfaces/profile.interface"
-import {ERROR_MESSAGES, extractData, handleAxiosError, PROFILE_URLS} from "../../utils"
+import {extractData, HTTP_METHODS, httpRequest, PROFILE_URLS} from "../../utils"
 
 export class ProfileService {
   constructor(private httpClient: AxiosInstance, private secret: string) {}
 
-  private async sendRequest<T>(url: string): Promise<T> {
-    try {
-      const response = await this.httpClient.get(url, {
-        headers: {Authorization: `Bearer ${this.secret}`}
-      })
-      return extractData(response);      
-    } catch (error) {
-      throw new Error(`${ERROR_MESSAGES.REQUEST_FAILED(url, handleAxiosError(error))}`)
-    }
+  private async sendRequest<T>(url: string, httpMethod: HTTP_METHODS): Promise<T> {
+    const response = await httpRequest(this.httpClient, httpMethod, url, null, this.secret)
+    return extractData<T>(response)
   }
 
-  public me(): Promise<IUser> {
-    return this.sendRequest<IUser>(PROFILE_URLS.ME)
+  public async me(): Promise<IUser> {
+    return await this.sendRequest<IUser>(PROFILE_URLS.ME, HTTP_METHODS.GET)
   }
 
-  public plan(): Promise<IPlan> {
-    return this.sendRequest<IPlan>(PROFILE_URLS.PLAN)
+  public async plan(): Promise<IPlan> {
+    return await this.sendRequest<IPlan>(PROFILE_URLS.PLAN, HTTP_METHODS.GET)
   }
 
-  public balance(): Promise<IBalance> {
-    return this.sendRequest<IBalance>(PROFILE_URLS.BALANCE)
+  public async balance(): Promise<IBalance> {
+    return await this.sendRequest<IBalance>(PROFILE_URLS.BALANCE, HTTP_METHODS.GET)
   }
 }

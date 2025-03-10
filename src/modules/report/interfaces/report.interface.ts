@@ -1,12 +1,3 @@
-export interface IPaginationOptions {
-  page?: number
-  limit?: number
-  cursor?: number | null
-  order?: string | null
-  sort?: "asc" | "desc"
-  search?: string | null
-}
-
 export interface IMessage {
   from: string
   to: string
@@ -27,10 +18,19 @@ export interface IOtpMessage {
   created_at: string
 }
 
-export interface IReport {
-  items: (IMessage | IOtpMessage)[]
-  total: number
-  totalPage: number
-  page: number
-  limit: number
+export interface IContactGroup {
+  uid: string
+  name: string
+  country_code_uid: string
+  contact_amount: number
+  is_enabled: boolean
+  created_at: string
+}
+
+export interface IContact {
+  uid: string
+  country_code_uid: string
+  phone: string
+  is_enabled: boolean
+  created_at: string
 }

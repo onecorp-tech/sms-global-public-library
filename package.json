@@ -1,9 +1,9 @@
 {
-  "name": "sms-agent-lib",
-  "version": "1.0.0",
+  "name": "sms-global-public",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/He-Hey-BOI/sms-agent-lib.git",
+  "repository": "https://github.com/onecorp-tech/sms-global-public-library",
   "author": "Rungroj Wongkaeo <63869763+RungrojWK@users.noreply.github.com>",
   "license": "MIT",
   "files": [
@@ -25,9 +25,9 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "axios": "^1.7.9",
-    "dotenv": "^16.4.7",
     "@nestjs/common": "^11.0.1",
-    "@nestjs/swagger": "^11.0.6"
+    "@nestjs/swagger": "^11.0.6",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7"
   }
 }
