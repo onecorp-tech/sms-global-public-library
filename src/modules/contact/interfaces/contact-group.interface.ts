@@ -3,7 +3,3 @@ export interface ICreateContactGroup {
   name: string
   is_enabled: boolean
 }
-
-export interface IDeleteContactGroup {
-  uid: string
-}

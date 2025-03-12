@@ -1,5 +1,5 @@
 import {createHttpClient} from "./utils/client/httpClient"
-import {OtpService, ProfileService, QuickSendService, ReportService} from "./modules"
+import {ContactGroupService, ContactService, OtpService, ProfileService, QuickSendService, ReportService} from "./modules"
 import {BASE_URL, ERROR_MESSAGES} from "./utils/constants"
 
 export class SmsAgentLib {
@@ -11,6 +11,8 @@ export class SmsAgentLib {
   public quicksend: QuickSendService
   public report: ReportService
   public profile: ProfileService
+  public contact: ContactService
+  public contactGroup: ContactGroupService
 
   constructor(secret: string = "", baseUrl: string = BASE_URL) {
     if (!secret || secret.trim() === "") {
@@ -24,5 +26,7 @@ export class SmsAgentLib {
     this.quicksend = new QuickSendService(this.httpClient, this.secret)
     this.report = new ReportService(this.httpClient, this.secret)
     this.profile = new ProfileService(this.httpClient, this.secret)
+    this.contactGroup = new ContactGroupService(this.httpClient, this.secret)
+    this.contact = new ContactService(this.httpClient, this.secret)
   }
 }

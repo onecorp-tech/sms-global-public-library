@@ -1,38 +1,10 @@
 import {AxiosInstance} from "axios"
-import {ERROR_MESSAGES, extractData, handleAxiosError, HTTP_METHODS, httpRequest, REPORT_URLS} from "../../utils"
+import {extractData, HTTP_METHODS, httpRequest, REPORT_URLS} from "../../utils"
 import {IPaginationOptions, IPaginatedResult} from "../../utils/interfaces/pagination.interface"
 import {IMessage, IOtpMessage, IContactGroup, IContact} from "./interfaces/report.interface"
 
 export class ReportService {
   constructor(private httpClient: AxiosInstance, private secret: string) {}
-
-  // private async sendRequest<T>(url: string, request: IPaginationOptions): Promise<IPaginatedResult<T>> {
-  //   try {
-  //     const response = await this.httpClient.get<{ data: IPaginatedResult<T> }>(url, {
-  //       params: request,
-  //       headers: { Authorization: `Bearer ${this.secret}` }
-  //     });
-  //     return extractData(response);
-  //   } catch (error) {
-  //     throw new Error(`${ERROR_MESSAGES.REQUEST_FAILED(url)}: ${handleAxiosError(error)}`);
-  //   }
-  // }
-
-  // public quicksend(request: IPaginationOptions): Promise<IPaginatedResult<IMessage>> {
-  //   return this.sendRequest<IMessage>(REPORT_URLS.QUICK_SEND, request);
-  // }
-
-  // public otp(request: IPaginationOptions): Promise<IPaginatedResult<IOtpMessage>> {
-  //   return this.sendRequest<IOtpMessage>(REPORT_URLS.OTP, request);
-  // }
-
-  // public contactGroup(request: IPaginationOptions): Promise<IPaginatedResult<IContactGroup>> {
-  //   return this.sendRequest<IContactGroup>(REPORT_URLS.CONTACT_GROUP, request);
-  // }
-
-  // public contact(request: IPaginationOptions): Promise<IPaginatedResult<IContact>> {
-  //   return this.sendRequest<IContact>(REPORT_URLS.CONTACT, request);
-  // }
 
   private async sendRequest<T>(url: string, httpMethod: HTTP_METHODS, request?: any): Promise<IPaginatedResult<T>> {
     const response = await httpRequest(this.httpClient, httpMethod, url, request, this.secret)
@@ -43,15 +15,39 @@ export class ReportService {
     return await this.sendRequest<IMessage>(REPORT_URLS.QUICK_SEND, HTTP_METHODS.GET, request)
   }
 
-  public async otp(request: IPaginationOptions): Promise<IPaginatedResult<IOtpMessage>> {
+  public async otp(page?: number, limit?: number, cursor?: number, order?: string, sort?: "asc" | "desc", search?: string): Promise<IPaginatedResult<IOtpMessage>> {
+    const request: IPaginationOptions = {
+      page: page,
+      limit: limit,
+      cursor: cursor,
+      order: order,
+      sort: sort,
+      search: search
+    }
     return await this.sendRequest<IOtpMessage>(REPORT_URLS.OTP, HTTP_METHODS.GET, request)
   }
 
-  public async contactGroup(request: IPaginationOptions): Promise<IPaginatedResult<IContactGroup>> {
+  public async contactGroup(page?: number, limit?: number, cursor?: number, order?: string, sort?: "asc" | "desc", search?: string): Promise<IPaginatedResult<IContactGroup>> {
+    const request: IPaginationOptions = {
+      page: page,
+      limit: limit,
+      cursor: cursor,
+      order: order,
+      sort: sort,
+      search: search
+    }
     return await this.sendRequest<IContactGroup>(REPORT_URLS.CONTACT_GROUP, HTTP_METHODS.GET, request)
   }
 
-  public async contact(contactGroupUID: string, request: IPaginationOptions): Promise<IPaginatedResult<IContact>> {
+  public async contact(contactGroupUID: string, page?: number, limit?: number, cursor?: number, order?: string, sort?: "asc" | "desc", search?: string): Promise<IPaginatedResult<IContact>> {
+    const request: IPaginationOptions = {
+      page: page,
+      limit: limit,
+      cursor: cursor,
+      order: order,
+      sort: sort,
+      search: search
+    }
     return await this.sendRequest<IContact>(REPORT_URLS.CONTACT(contactGroupUID), HTTP_METHODS.GET, request)
   }
 }

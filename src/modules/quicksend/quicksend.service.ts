@@ -1,6 +1,6 @@
 import {AxiosInstance} from "axios"
 import {IQuickSendRequest} from "./interfaces/quicksend.interface"
-import {ERROR_MESSAGES, handleAxiosError, HTTP_METHODS, httpRequest, QUICK_SEND_URLS} from "../../utils"
+import {ERROR_MESSAGES, HTTP_METHODS, httpRequest, QUICK_SEND_URLS} from "../../utils"
 
 export class QuickSendService {
   constructor(private httpClient: AxiosInstance, private secret: string) {}
@@ -12,7 +12,13 @@ export class QuickSendService {
     }
   }
 
-  public async send(request: IQuickSendRequest): Promise<{message: string}> {
+  public async send(senderId: string, countryCode: string, recipient: string, message: string): Promise<{message: string}> {
+    const request: IQuickSendRequest = {
+      sender_id: senderId,
+      country_code: countryCode,
+      recipient: recipient,
+      message: message
+    }
     await this.sendRequest<void>(QUICK_SEND_URLS.SEND, HTTP_METHODS.POST, request)
     return {message: "Message has been sent successfully."}
   }

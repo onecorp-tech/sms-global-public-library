@@ -11,17 +11,7 @@ describe("OtpService Integration Tests", () => {
   })
 
   test("should send OTP", async () => {
-    const request: OtpSendRequest = {
-      sender_id: config.otp.senderId,
-      country_code: config.otp.countryCode,
-      recipient: config.otp.recipient,
-      message: config.otp.message,
-      ref_code: config.otp.refCode,
-      validity: config.otp.validity,
-      digit: config.otp.digit
-    }
-
-    const response = await otpService.send(request)
+    const response = await otpService.send(config.otp.senderId, config.otp.countryCode, config.otp.recipient, config.otp.message, config.otp.refCode, config.otp.validity, config.otp.digit)
     console.log("OTP Send Response:", response)
 
     expect(response.token).toBeDefined()
@@ -30,13 +20,7 @@ describe("OtpService Integration Tests", () => {
   })
 
   test("should verify OTP", async () => {
-    const request: VerifyOtpRequest = {
-      token: config.otpVerify.token,
-      otp_code: config.otpVerify.otpCode,
-      ref_code: config.otpVerify.refCode
-    }
-
-    const response = await otpService.verify(request)
+    const response = await otpService.verify(config.otpVerify.token, config.otpVerify.otpCode, config.otpVerify.refCode)
     console.log("OTP Verify Response:", response)
 
     expect(response.is_verified).toBeDefined()
@@ -48,7 +32,7 @@ describe("OtpService Integration Tests", () => {
       ref_code: config.otpResend.refCode
     }
 
-    const response = await otpService.resend(request)
+    const response = await otpService.resend(config.otpResend.token, config.otpResend.refCode)
     console.log("OTP Resend Response:", response)
 
     expect(response.token).toBeDefined()

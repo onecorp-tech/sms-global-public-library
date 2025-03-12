@@ -17,7 +17,7 @@ export interface VerifyOtpRequest {
 export interface OtpResendRequest {
   token: string
   ref_code: string
-  digit?: string
+  digit?: number
   validity?: number
   message?: string
 }

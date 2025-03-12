@@ -14,15 +14,36 @@ export class OtpService {
     return result
   }
 
-  public async send(request: OtpSendRequest): Promise<OtpSendResponse> {
+  public async send(senderId: string, countryCode: string, recipient: string, message?: string, refCode?: string, digit?: number, validity?: number): Promise<OtpSendResponse> {
+    const request: OtpSendRequest = {
+      sender_id: senderId,
+      country_code: countryCode,
+      recipient: recipient,
+      message: message,
+      ref_code: refCode,
+      digit: digit,
+      validity: validity
+    }
     return await this.sendRequest<OtpSendResponse>(OTP_URLS.SEND, HTTP_METHODS.POST, request)
   }
 
-  public async verify(request: VerifyOtpRequest): Promise<OtpVerifyResponse> {
+  public async verify(token: string, otpCode: number, refCode: string): Promise<OtpVerifyResponse> {
+    const request: VerifyOtpRequest = {
+      token: token,
+      otp_code: otpCode,
+      ref_code: refCode
+    }
     return await this.sendRequest<OtpVerifyResponse>(OTP_URLS.VERIFY, HTTP_METHODS.POST, request)
   }
 
-  public async resend(request: OtpResendRequest): Promise<OtpSendResponse> {
+  public async resend(token: string, refCode: string, message?: string, digit?: number, validity?: number): Promise<OtpSendResponse> {
+    const request: OtpResendRequest = {
+      token: token,
+      ref_code: refCode,
+      digit: digit,
+      validity: validity,
+      message: message
+    }
     return await this.sendRequest<OtpSendResponse>(OTP_URLS.RESEND, HTTP_METHODS.POST, request)
   }
 }
